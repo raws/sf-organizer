@@ -5,7 +5,7 @@ include("lib/fitzgerald.php");
 class Organizer extends Fitzgerald {
 	
 	public function get_index() {
-		return "Hello world!";
+		return $this->render("index");
 	}
 	
 }
