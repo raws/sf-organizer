@@ -12,7 +12,7 @@
             <div class="container">
                 <a class="brand" href="/~ross/organizer/">Organizer</a>
                 <ul class="nav">
-                    <li><a href="#">Overview</a></li>
+                    <li><a href="/~ross/organizer/">Overview</a></li>
                 </ul>
             </div>
         </div>
