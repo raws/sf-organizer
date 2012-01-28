@@ -13,12 +13,27 @@
                 <a class="brand" href="/">Organizer</a>
                 <ul class="nav">
                     <li><a href="/">Overview</a></li>
+                    <li><a href="/settings">Settings</a></li>
                 </ul>
             </div>
         </div>
     </div>
     
     <div class="container">
+        <?php if (Flight::get("organizer.settings") == null): ?>
+            <div class="alert-message error">
+                <p><strong>You need to configure Organizer!</strong> Visit <a href="/settings">settings</a> to do so.</p>
+            </div>
+        <?php endif; ?>
+        
+        <?php if (isset($error)): ?>
+            <?=$error;?>
+        <?php endif; ?>
+        
+        <?php if (isset($success)): ?>
+            <?=$success;?>
+        <?php endif; ?>
+        
         <?=$content;?>
     </div>
 </body>
