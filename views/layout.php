@@ -10,9 +10,9 @@
     <div class="topbar">
         <div class="topbar-inner">
             <div class="container">
-                <a class="brand" href="/~ross/organizer/">Organizer</a>
+                <a class="brand" href="/">Organizer</a>
                 <ul class="nav">
-                    <li><a href="/~ross/organizer/">Overview</a></li>
+                    <li><a href="/">Overview</a></li>
                 </ul>
             </div>
         </div>

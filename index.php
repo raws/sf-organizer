@@ -1,28 +1,10 @@
 <?php
+require "../lib/flight/Flight.php";
 
-include("lib/fitzgerald.php");
+Flight::route("/", function() {
+    Flight::render("index", null, "content");
+    Flight::render("layout");
+});
 
-class Organizer extends Fitzgerald {
-	
-	public function get_index() {
-	    $unorganized = $this->get_unorganized();
-		return $this->render("index", compact("unorganized"));
-	}
-	
-	private function get_unorganized() {
-	    return glob($this->options->torrents . "/*/*.mkv");
-	}
-	
-}
-
-$app = new Organizer(array(
-    "mountPoint" => "/~ross/organizer",
-    "torrents" => "/volume1/torrents",
-    "layout" => "layout"
-));
-
-$app->get("/", "get_index");
-
-$app->run();
-
+Flight::start();
 ?>
