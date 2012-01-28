@@ -10,8 +10,13 @@ class Organizer extends Fitzgerald {
 	
 }
 
-$app = new Organizer(array("mountPoint" => "/~ross/organizer"));
+$app = new Organizer(array(
+    "mountPoint" => "/~ross/organizer",
+    "layout" => "layout"
+));
+
 $app->get("/", "get_index");
+
 $app->run();
 
 ?>
