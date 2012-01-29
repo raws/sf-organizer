@@ -15,9 +15,8 @@ role :web, "192.168.1.103"
 
 namespace :deploy do
   task :create_config do
-    config_dir_path = File.join(shared_path, "config")
-    config_file_path = File.join(config_dir_path, "organizer.json")
-    run "mkdir -p #{config_dir_path.shellescape} && touch #{config_file_path.shellescape}"
+    config_dir_path = File.join(shared_path, "config").shellescape
+    run "mkdir -p #{config_dir_path} && chmod -R 777 #{config_dir_path}"
   end
   
   task :symlink_config do
