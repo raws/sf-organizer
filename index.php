@@ -1,11 +1,17 @@
 <?php
 require "lib/flight/Flight.php";
-require "lib/organizer/settings.php";
 
+require "lib/organizer/settings.php";
 Flight::load_settings();
 
+require "lib/organizer/explorer.php";
+Flight::register("explorer", "organizer\Explorer", array(
+    Flight::setting("from.folders"),
+    Flight::setting("from.pattern")
+));
+
 Flight::route("/", function() {
-    Flight::render("index", null, "content");
+    Flight::render("index", array("entries" => Flight::explorer()->get_entries()), "content");
     Flight::render("layout");
 });
 
@@ -23,9 +29,10 @@ Flight::route("POST /settings", function() {
         $settings = array("paths" => array());
     }
     
-    $settings["paths"]["sources"] = explode("\n", $_POST["paths"]["sources"]);
-    $settings["paths"]["movies"] = $_POST["paths"]["movies"];
-    $settings["paths"]["tv"] = $_POST["paths"]["tv"];
+    $settings["from"]["folders"] = explode("\n", trim($_POST["from"]["folders"]));
+    $settings["from"]["pattern"] = $_POST["from"]["pattern"];
+    $settings["to"]["movies"] = rtrim(trim($_POST["to"]["movies"]), "/");
+    $settings["to"]["tv"] = rtrim(trim($_POST["to"]["tv"]), "/");
     
     $result = Flight::write_settings($settings);
     if ($result !== false) {

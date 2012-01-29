@@ -15,6 +15,14 @@ Flight::map("load_settings", function() {
     return $settings;
 });
 
+Flight::map("setting", function($path) {
+    $settings = Flight::get("organizer.settings");
+    foreach (explode(".", $path) as $key) {
+        $settings = $settings[$key];
+    }
+    return $settings;
+});
+
 Flight::map("write_settings", function($settings) {
     $settings = json_encode($settings);
     return file_put_contents(Flight::get("organizer.settings.path"), $settings);

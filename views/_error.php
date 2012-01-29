@@ -1,3 +1,3 @@
 <div class="alert-message error">
-    <?=$message;?>
+    <strong>Error!</strong> <?=$message;?>
 </div>

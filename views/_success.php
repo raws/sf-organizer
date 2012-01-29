@@ -1,3 +1,3 @@
 <div class="alert-message success">
-    <?=$message;?>
+    <strong>Success!</strong> <?=$message;?>
 </div>

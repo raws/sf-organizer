@@ -5,10 +5,18 @@
         <legend>Sources</legend>
         
         <div class="clearfix">
-            <label for="paths[sources]">Sources</label>
+            <label for="from[folders]">Folders</label>
             <div class="input">
-                <textarea id="paths[sources]" name="paths[sources]" class="span8" rows="5"><?=implode("\n", $settings["paths"]["sources"]);?></textarea>
-                <span class="help-block">One path per line. Standard glob patterns are expanded.</span>
+                <textarea id="from_folders" name="from[folders]" class="span8" rows="3"><?=implode("\n", $settings["from"]["folders"]);?></textarea>
+                <span class="help-block">Folders, one per line, in which to recursively search for files.</span>
+            </div>
+        </div>
+        
+        <div class="clearfix">
+            <label for="from[pattern]">Pattern</label>
+            <div class="input">
+                <input id="from_pattern" name="from[pattern]" class="span8" type="text" value="<?=$settings["from"]["pattern"];?>">
+                <span class="help-block">File names will be matched against this regular expression.</span>
             </div>
         </div>
     </fieldset>
@@ -17,16 +25,16 @@
         <legend>Destinations</legend>
         
         <div class="clearfix">
-            <label for="paths[movies]">Movies</label>
+            <label for="to[movies]">Movies</label>
             <div class="input">
-                <input id="paths[movies]" name="paths[movies]" class="span8" type="text" value="<?=$settings["paths"]["movies"];?>">
+                <input id="to_movies" name="to[movies]" class="span8" type="text" value="<?=$settings["to"]["movies"];?>">
             </div>
         </div>
         
         <div class="clearfix">
-            <label for="paths[tv]">TV Shows</label>
+            <label for="to[tv]">TV Shows</label>
             <div class="input">
-                <input id="paths[tv]" name="paths[tv]" class="span8" type="text" value="<?=$settings["paths"]["tv"];?>">
+                <input id="to_tv" name="to[tv]" class="span8" type="text" value="<?=$settings["to"]["tv"];?>">
             </div>
         </div>
     </fieldset>
