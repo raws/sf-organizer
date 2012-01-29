@@ -1,10 +1,8 @@
 <?php
 require "lib/flight/Flight.php";
+require "lib/organizer/settings.php";
 
-if (($f = file_get_contents("config/settings.json")) !== false) {
-    $config = json_decode($f);
-    Flight::set("organizer.settings", $config);
-}
+Flight::load_settings();
 
 Flight::route("/", function() {
     Flight::render("index", null, "content");
@@ -13,7 +11,7 @@ Flight::route("/", function() {
 
 Flight::route("/settings", function() {
     if (($settings = Flight::get("organizer.settings")) == null) {
-        $settings = array();
+        $settings = array("paths" => array());
     }
     
     Flight::render("settings", array("settings" => $settings), "content");
@@ -22,16 +20,16 @@ Flight::route("/settings", function() {
 
 Flight::route("POST /settings", function() {
     if (($settings = Flight::get("organizer.settings")) == null) {
-        $settings = array();
+        $settings = array("paths" => array());
     }
     
-    $settings->paths->torrents = $_POST["paths"]["torrents"];
-    $settings->paths->movies = $_POST["paths"]["movies"];
-    $settings->paths->tv = $_POST["paths"]["tv"];
-    Flight::set("organizer.settings", $settings);
+    $settings["paths"]["torrents"] = $_POST["paths"]["torrents"];
+    $settings["paths"]["movies"] = $_POST["paths"]["movies"];
+    $settings["paths"]["tv"] = $_POST["paths"]["tv"];
     
-    $result = file_put_contents("config/settings.json", json_encode($settings));
+    $result = Flight::write_settings($settings);
     if ($result !== false) {
+        $settings = Flight::load_settings();
         Flight::render("_success", array("message" => "Changes saved."), "success");
     } else {
         Flight::render("_error", array("message" => "Changes could not be saved."), "error");

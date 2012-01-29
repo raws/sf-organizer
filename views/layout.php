@@ -20,8 +20,8 @@
     </div>
     
     <div class="container">
-        <?php if (Flight::get("organizer.settings") == null): ?>
-            <div class="alert-message error">
+        <?php if (Flight::get("organizer.settings") == false): ?>
+            <div class="alert-message">
                 <p><strong>You need to configure Organizer!</strong> Visit <a href="/settings">settings</a> to do so.</p>
             </div>
         <?php endif; ?>
