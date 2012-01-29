@@ -23,7 +23,7 @@ Flight::route("POST /settings", function() {
         $settings = array("paths" => array());
     }
     
-    $settings["paths"]["torrents"] = $_POST["paths"]["torrents"];
+    $settings["paths"]["sources"] = explode("\n", $_POST["paths"]["sources"]);
     $settings["paths"]["movies"] = $_POST["paths"]["movies"];
     $settings["paths"]["tv"] = $_POST["paths"]["tv"];
     

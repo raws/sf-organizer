@@ -1,15 +1,20 @@
 <h1>Settings</h1>
 
-<p>Make sure Organizer knows where to find and move your files!</p>
-
 <form action="/settings" method="post">
     <fieldset>
+        <legend>Sources</legend>
+        
         <div class="clearfix">
-            <label for="paths[torrents]">Torrents</label>
+            <label for="paths[sources]">Sources</label>
             <div class="input">
-                <input id="paths[torrents]" name="paths[torrents]" class="span8" type="text" value="<?=$settings["paths"]["torrents"];?>">
+                <textarea id="paths[sources]" name="paths[sources]" class="span8" rows="5"><?=implode("\n", $settings["paths"]["sources"]);?></textarea>
+                <span class="help-block">One path per line. Standard glob patterns are expanded.</span>
             </div>
         </div>
+    </fieldset>
+    
+    <fieldset>
+        <legend>Destinations</legend>
         
         <div class="clearfix">
             <label for="paths[movies]">Movies</label>
@@ -24,9 +29,9 @@
                 <input id="paths[tv]" name="paths[tv]" class="span8" type="text" value="<?=$settings["paths"]["tv"];?>">
             </div>
         </div>
-        
-        <div class="actions">
-            <input class="btn primary" type="submit" value="Save changes">
-        </div>
     </fieldset>
+    
+    <div class="actions">
+        <input class="btn primary" type="submit" value="Save changes">
+    </div>
 </form>
