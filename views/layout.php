@@ -27,14 +27,14 @@
         <?php endif; ?>
         
         <?php if (isset($error)): ?>
-            <?=$error;?>
+            <?php echo($error); ?>
         <?php endif; ?>
         
         <?php if (isset($success)): ?>
-            <?=$success;?>
+            <?php echo($success); ?>
         <?php endif; ?>
         
-        <?=$content;?>
+        <?php echo($content); ?>
     </div>
 </body>
 </html>

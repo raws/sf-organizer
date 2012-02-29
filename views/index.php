@@ -3,6 +3,6 @@
 <h2><?=sizeof($entries);?> entries</h2>
 <ul>
     <?php foreach($entries as $path): ?>
-        <li><?=$path;?></li>
+        <li><?php echo($path); ?></li>
     <?php endforeach; ?>
 </ul>
