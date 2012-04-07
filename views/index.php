@@ -2,7 +2,7 @@
 	<h1>Organizer</h1>
 </div>
 
-<p>There are <?=sizeof($entries);?> files awaiting organization.</p>
+<p style="margin-bottom:1em">There are <?=sizeof($entries);?> files awaiting organization.</p>
 
 <ul class="file-list">
 	<?php foreach($entries as $path): ?>
@@ -18,6 +18,10 @@
 		</li>
 	<?php endforeach; ?>
 </ul>
+
+<div class="form-actions" style="text-align:right">
+	<a id="organize-btn" class="btn btn-primary disabled" href="#">Organize</a>
+</div>
 
 <script type="text/javascript" charset="utf-8">
 	var Organizer = {
@@ -60,11 +64,26 @@
 			} else {
 				li.removeClass("movie tv-show").addClass(btnType);
 			}
+			
+			$("#organize-btn").trigger("com.blolol.sf.update-organize-btn");
 		});
 		
 		// Click row to edit file name
 		$("ul.file-list > li").click(function() {
 			$(this).find(".file-basename").focus();
+		});
+		
+		// Organize button functionality
+		$("#organize-btn").bind("com.blolol.sf.update-organize-btn", function() {
+			var count = $("ul.file-list > li.movie, ul.file-list > li.tv-show").length;
+			var label = count === 0 ? "Organize" : "Organize " + count + " file";
+			if (count > 1) { label += "s"; }
+			$(this).text(label);
+			if (count === 0) { $(this).addClass("disabled"); } else { $(this).removeClass("disabled"); }
+		}).click(function(event) {
+			event.preventDefault();
+			if ($(this).hasClass("disabled")) { return; }
+			alert("Not yet implemented!");
 		});
 	});
 </script>
