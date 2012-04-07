@@ -38,6 +38,7 @@
 			var groups = pathElement.text().match(/^(.+\/)([^\/]+)$/);
 			if (groups !== null) {
 				var path = groups[1], basename = groups[2];
+				pathElement.text(basename);
 				pathElement.prev(".file-basename").text(basename);
 			}
 		});
