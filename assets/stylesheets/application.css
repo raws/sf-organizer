@@ -41,7 +41,7 @@ ul.file-list > li.tv-show {
 }
 
 ul.file-list .file-name {
-	width: 50%;
+	width: 80%;
 	float: left;
 }
 
@@ -50,8 +50,11 @@ ul.file-list .file-basename {
 }
 
 .file-path {
+	height: 1em;
+	display: inline-block;
 	color: #bbb;
 	font-size: 11px;
+	text-overflow: ellipsis;
 }
 
 .file-actions {

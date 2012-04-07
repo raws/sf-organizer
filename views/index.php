@@ -9,7 +9,7 @@
 		<li>
 			<div class="file-name">
 				<strong class="file-basename" contenteditable></strong>
-				<small class="file-path"><?php echo($path); ?></small>
+				<small class="file-path" title="<?php echo($path); ?>"><?php echo($path); ?></small>
 			</div>
 			<div class="file-actions btn-group" data-toggle="buttons-radio">
 				<a class="btn btn-small movie">Movie</a>
@@ -64,6 +64,6 @@
 		// Click row to edit file name
 		$("ul.file-list > li").click(function() {
 			$(this).find(".file-basename").focus();
-		})
+		});
 	});
 </script>
