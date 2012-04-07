@@ -1,8 +1,11 @@
-<h1>Organizer</h1>
+<div class="page-header">
+	<h1>Organizer</h1>
+</div>
 
-<h2><?=sizeof($entries);?> entries</h2>
+<p>There are <?=sizeof($entries);?> files awaiting organization:</p>
+
 <ul>
-    <?php foreach($entries as $path): ?>
-        <li><?php echo($path); ?></li>
-    <?php endforeach; ?>
+	<?php foreach($entries as $path): ?>
+		<li><?php echo($path); ?></li>
+	<?php endforeach; ?>
 </ul>

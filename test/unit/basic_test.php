@@ -1,9 +1,9 @@
 <?php
 class BasicTest extends UnitTestCase {
-    
-    function test_pass() {
-        $this->assertTrue(true);
-    }
-    
+	
+	function test_pass() {
+		$this->assertTrue(true);
+	}
+	
 }
 ?>
