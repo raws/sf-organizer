@@ -42,6 +42,6 @@
 	</fieldset>
 	
 	<div class="form-actions">
-		<input class="btn btn-primary" type="submit" value="Save Settings">
+		<input class="btn btn-primary" type="submit" value="Save changes">
 	</div>
 </form>
