@@ -5,6 +5,26 @@
 	<title>Stratofortress &mdash; Organizer</title>
 	<link rel="stylesheet" type="text/css" href="assets/stylesheets/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/stylesheets/application.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/javascripts/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		$(function() {
+			// Set active nav bar item
+			var path = window.location.pathname.toString();
+			var routes = {
+				"nav-item-settings": /settings/i
+			};
+			
+			for (navItemId in routes) {
+				var pattern = routes[navItemId];
+				if (pattern.test(path)) {
+					$("#site-nav > li").removeClass("active");
+					$("#" + navItemId).addClass("active");
+					break;
+				}
+			}
+		});
+	</script>
 </head>
 <body>
 	<div class="container">
@@ -42,26 +62,5 @@
 
 		<?php echo($content); ?>
 	</div>
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/javascripts/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript" charset="utf-8">
-		$(function() {
-			// Set active nav bar item
-			var path = window.location.pathname.toString();
-			var routes = {
-				"nav-item-settings": /settings/i
-			};
-			
-			for (navItemId in routes) {
-				var pattern = routes[navItemId];
-				if (pattern.test(path)) {
-					$("#site-nav > li").removeClass("active");
-					$("#" + navItemId).addClass("active");
-					break;
-				}
-			}
-		});
-	</script>
 </body>
 </html>
