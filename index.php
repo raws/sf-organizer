@@ -52,10 +52,7 @@ Flight::route("POST /", function() {
 			}
 		}
 		
-		if (!mkdir($link_dir, 0755, TRUE)) {
-			$result[$path] = array("status" => FALSE, "error" => "Could not create directory", "path" => $link_dir);
-			continue;
-		}
+		mkdir($link_dir, 0755, TRUE)
 		
 		$link_path = $link_dir . "/" . $options["name"];
 		
