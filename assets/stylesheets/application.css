@@ -28,7 +28,7 @@ ul.file-list > li:nth-child(odd) {
 
 ul.file-list > li:hover,
 ul.file-list > li.movie:hover,
-ul.file-list > li.tv-show:hover {
+ul.file-list > li.tv:hover {
 	background-color: #f8f6d7;
 	border-bottom-color: rgb(229, 220, 189);
 	-webkit-transition: background-color 0.25s;
@@ -39,7 +39,7 @@ ul.file-list > li.movie {
 	border-bottom-color: rgb(200, 220, 178);
 }
 
-ul.file-list > li.tv-show {
+ul.file-list > li.tv {
 	background-color: rgb(224, 238, 243);
 	border-bottom-color: rgb(195, 219, 231);
 }

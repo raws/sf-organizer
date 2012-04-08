@@ -7,7 +7,7 @@
 			</div>
 			<div class="file-actions btn-group" data-toggle="buttons-radio">
 				<a class="btn btn-small movie">Movie</a>
-				<a class="btn btn-small tv-show">TV Show</a>
+				<a class="btn btn-small tv">TV Show</a>
 			</div>
 		</li>
 	<?php endforeach; ?>
@@ -29,8 +29,8 @@
 		getMediaTypeByClass: function(btn) {
 			if (btn.hasClass("movie")) {
 				return "movie";
-			} else if (btn.hasClass("tv-show")) {
-				return "tv-show";
+			} else if (btn.hasClass("tv")) {
+				return "tv";
 			}
 			return null;
 		},
@@ -47,6 +47,17 @@
 				textRange.moveToElementText(element);
 				textRange.select();
 			}
+		},
+		
+		serializeSelections: function() {
+			var data = { "paths[]": [], "names[]": [], "types[]": [] };
+			$("ul.file-list > li.movie, ul.file-list > li.tv").each(function(index) {
+				var li = $(this);
+				data["paths[]"][index] = li.find(".file-path").attr("title");
+				data["names[]"][index] = li.find(".file-basename").text();
+				data["types[]"][index] = Organizer.getMediaTypeByClass(li);
+			});
+			return data;
 		}
 	};
 	
@@ -75,9 +86,9 @@
 				event.stopPropagation();
 				
 				btn.removeClass("active");
-				li.removeClass("movie tv-show");
+				li.removeClass("movie tv");
 			} else {
-				li.removeClass("movie tv-show").addClass(btnType);
+				li.removeClass("movie tv").addClass(btnType);
 				Organizer.selectElement(li.find(".file-basename")[0]);
 			}
 			
@@ -92,7 +103,7 @@
 		
 		// Organize button functionality
 		$("#organize-btn").bind("com.blolol.sf.update-organize-btn", function() {
-			var count = $("ul.file-list > li.movie, ul.file-list > li.tv-show").length;
+			var count = $("ul.file-list > li.movie, ul.file-list > li.tv").length;
 			var label = count === 0 ? "Organize" : "Organize " + count + " file";
 			if (count > 1) { label += "s"; }
 			$(this).text(label);
@@ -100,7 +111,10 @@
 		}).click(function(event) {
 			event.preventDefault();
 			if ($(this).hasClass("disabled")) { return; }
-			alert("Not yet implemented!");
+			var data = Organizer.serializeSelections();
+			$.post("/", data, function(data, status) {
+				console.log(data);
+			});
 		});
 	});
 </script>
