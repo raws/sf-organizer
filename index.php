@@ -37,7 +37,14 @@ Flight::route("POST /", function() {
 		}
 		
 		$pathinfo = pathinfo($options["name"]);
-		$link_dir = $settings["to"][$options["type"]];
+		
+		if ($options["type"] === "movie") { $options["type"] = "movies"; }
+		if (isset($settings["to"][$options["type"]])) {
+			$link_dir = $settings["to"][$options["type"]];
+		} else {
+			$result[$path] = array("status" => FALSE, "error" => "Unrecognized media type", "type" => $options["type"]);
+			continue;
+		}
 		
 		if ($options["type"] === "movie") {
 			$link_dir .= "/" . $pathinfo["filename"];
