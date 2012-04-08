@@ -52,7 +52,7 @@ Flight::route("POST /", function() {
 			}
 		}
 		
-		mkdir($link_dir, 0755, TRUE)
+		mkdir($link_dir, 0755, TRUE);
 		
 		$link_path = $link_dir . "/" . $options["name"];
 		
