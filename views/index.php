@@ -26,13 +26,27 @@
 
 <script type="text/javascript" charset="utf-8">
 	var Organizer = {
-		"getMediaTypeByClass": function(btn) {
+		getMediaTypeByClass: function(btn) {
 			if (btn.hasClass("movie")) {
 				return "movie";
 			} else if (btn.hasClass("tv-show")) {
 				return "tv-show";
 			}
 			return null;
+		},
+		
+		selectElement: function(element) {
+			if (window.getSelection) {
+				var sel = window.getSelection();
+				sel.removeAllRanges();
+				var range = document.createRange();
+				range.selectNodeContents(element);
+				sel.addRange(range);
+			} else if (document.selection) {
+				var textRange = document.body.createTextRange();
+				textRange.moveToElementText(element);
+				textRange.select();
+			}
 		}
 	};
 	
@@ -64,6 +78,7 @@
 				li.removeClass("movie tv-show");
 			} else {
 				li.removeClass("movie tv-show").addClass(btnType);
+				Organizer.selectElement(li.find(".file-basename")[0]);
 			}
 			
 			$("#organize-btn").trigger("com.blolol.sf.update-organize-btn");
@@ -71,7 +86,8 @@
 		
 		// Click row to edit file name
 		$("ul.file-list > li").click(function() {
-			$(this).find(".file-basename").focus();
+			var basename = $(this).find(".file-basename")[0];
+			basename.focus();
 		});
 		
 		// Organize button functionality

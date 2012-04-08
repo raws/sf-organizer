@@ -53,6 +53,10 @@ ul.file-list .file-basename {
 	display: block;
 }
 
+.file-basename:focus {
+	outline: none;
+}
+
 .file-path {
 	height: 1em;
 	display: inline-block;
