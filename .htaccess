@@ -2,10 +2,9 @@ Order Allow,Deny
 Allow from localhost 127.0.0.1 192.168.1
 Satisfy Any
 
-AuthType Digest
+AuthType Basic
 AuthName "Organizer"
-AuthDigestDomain https://organizer.sf.blolol.com/
-AuthDigestProvider file
+AuthBasicProvider file
 AuthUserFile /u/apps/organizer.sf.blolol.com/shared/authentication.htpasswd
 Require valid-user
 
