@@ -1,9 +1,3 @@
-<div class="page-header">
-	<h1>Organizer</h1>
-</div>
-
-<p style="margin-bottom:1em">There are <?=sizeof($entries);?> files awaiting organization.</p>
-
 <ul class="file-list">
 	<?php foreach($entries as $path): ?>
 		<li>
@@ -21,7 +15,12 @@
 
 <div class="form-actions form-actions-fixed-bottom" style="text-align:right">
 	<div class="container">
-		<a id="organize-btn" class="btn btn-primary disabled" href="#">Organize</a>
+		<div class="pull-left">
+			<p><?=sizeof($entries);?> files awaiting organization</p>
+		</div>
+		<div class="pull-right">
+			<a id="organize-btn" class="btn btn-primary disabled" href="#">Organize</a>
+		</div>
 	</div>
 </div>
 

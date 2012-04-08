@@ -28,7 +28,7 @@
 </head>
 <body>
 	<div class="container">
-		<div class="navbar">
+		<div id="site-navbar" class="navbar">
 			<div class="navbar-inner">
 				<div class="container">
 					<a class="brand" href="/">Organizer</a>
