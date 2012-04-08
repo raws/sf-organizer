@@ -19,8 +19,10 @@
 	<?php endforeach; ?>
 </ul>
 
-<div class="form-actions" style="text-align:right">
-	<a id="organize-btn" class="btn btn-primary disabled" href="#">Organize</a>
+<div class="form-actions form-actions-fixed-bottom" style="text-align:right">
+	<div class="container">
+		<a id="organize-btn" class="btn btn-primary disabled" href="#">Organize</a>
+	</div>
 </div>
 
 <script type="text/javascript" charset="utf-8">

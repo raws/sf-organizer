@@ -1,5 +1,5 @@
 body {
-	margin: 2em 0;
+	padding: 25px 0 89px 0;
 }
 
 ul.file-list {
@@ -63,4 +63,17 @@ ul.file-list .file-basename {
 	float: right;
 	position: relative;
 	top: 4px;
+}
+
+.form-actions-fixed-bottom {
+	width: 100%;
+	margin-bottom: 0;
+	padding-left: 0;
+	padding-right: 0;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1030;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
