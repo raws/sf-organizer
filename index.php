@@ -32,7 +32,7 @@ Flight::route("POST /", function() {
 	$settings = Flight::get("organizer.settings");
 	foreach ($files as $path => $options) {
 		if (!file_exists($path)) {
-			$result[$path] = array("status" => FALSE, "error" => "Original file does not exist");
+			$result[$path] = array("status" => "error", "error" => "Original file does not exist");
 			continue;
 		}
 		
@@ -40,7 +40,7 @@ Flight::route("POST /", function() {
 		if (isset($settings["to"][$options["type"]])) {
 			$link_dir = $settings["to"][$options["type"]];
 		} else {
-			$result[$path] = array("status" => FALSE, "error" => "Unrecognized media type", "type" => $options["type"]);
+			$result[$path] = array("status" => "error", "error" => "Unrecognized media type", "type" => $options["type"]);
 			continue;
 		}
 		
@@ -53,7 +53,7 @@ Flight::route("POST /", function() {
 				$season = intval($matches[2]);
 				$link_dir .= "/" . $show . "/Season " . $season;
 			} else {
-				$result[$path] = array("status" => FALSE, "error" => "TV episode name is formatted incorrectly");
+				$result[$path] = array("status" => "error", "error" => "TV episode name is formatted incorrectly");
 				continue;
 			}
 		}
@@ -63,14 +63,18 @@ Flight::route("POST /", function() {
 		$link_path = $link_dir . "/" . $options["name"];
 		
 		if (file_exists($link_path)) {
-			$result[$path] = array("status" => FALSE, "error" => "Link target already exists", "path" => $link_path);
+			$result[$path] = array("status" => "error", "error" => "Link target already exists", "path" => $link_path);
 			continue;
 		}
 		
 		if (link($path, $link_path)) {
-			$result[$path] = array("status" => TRUE, "path" => $link_path);
+			if (unlink($path)) {
+				$result[$path] = array("status" => "success", "path" => $link_path);
+			} else {
+				$result[$path] = array("status" => "warning", "warning" => "Could not delete original file", "path" => $link_path);
+			}
 		} else {
-			$result[$path] = array("status" => FALSE, "error" => "Could not create link", "path" => $link_path);
+			$result[$path] = array("status" => "error", "error" => "Could not create link", "path" => $link_path);
 		}
 	}
 	
