@@ -63,7 +63,7 @@ Flight::route("POST /", function() {
 		$link_path = $link_dir . "/" . $options["name"];
 		
 		if (file_exists($link_path)) {
-			$result[$path] = array("status" => FALSE, "error" => "Link target already exists");
+			$result[$path] = array("status" => FALSE, "error" => "Link target already exists", "path" => $link_path);
 			continue;
 		}
 		
