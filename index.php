@@ -36,8 +36,6 @@ Flight::route("POST /", function() {
 			continue;
 		}
 		
-		$pathinfo = pathinfo($options["name"]);
-		
 		if ($options["type"] === "movie") { $options["type"] = "movies"; }
 		if (isset($settings["to"][$options["type"]])) {
 			$link_dir = $settings["to"][$options["type"]];
@@ -46,7 +44,8 @@ Flight::route("POST /", function() {
 			continue;
 		}
 		
-		if ($options["type"] === "movie") {
+		$pathinfo = pathinfo($options["name"]);
+		if ($options["type"] === "movies") {
 			$link_dir .= "/" . $pathinfo["filename"];
 		} else if ($options["type"] === "tv") {
 			if (preg_match("/^\s*(.*)\s*-\s*S(\d+)E\d+/", $options["name"], $matches)) {
