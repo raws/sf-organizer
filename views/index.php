@@ -24,8 +24,8 @@
 				if (groups !== null) {
 					var path = groups[1], basename = groups[2];
 					
-					// Try to be helpful about reformatting TV episode file names
-					var fileName = Organizer.guessEpisodeDetails(path, basename);
+					// Try to be helpful about reformatting movie and TV episode file names
+					var fileName = Organizer.guessMovieDetails(path, basename) || Organizer.guessEpisodeDetails(path, basename) || basename;
 					
 					pathElement.text(basename);
 					pathElement.prev(".file-basename").text(fileName);
@@ -61,6 +61,21 @@
 			});
 		},
 		
+		guessMovieDetails: function(path, basename) {
+			var movie;
+			if (movie = basename.match(/^(.+?)\(?(\d{4})\)?.*\.(\w+)$/)) {
+				/**
+				 * movie[1] => Title (e.g. "The.Italian.Job.")
+				 * movie[2] => Year (e.g. "1968")
+				 * movie[3] => File extension (e.g. ".mkv")
+				 **/
+				var title = Organizer.normalizeTitle(movie[1]);
+				var year = parseInt(movie[2], 10); // Explicit radix to ensure decimal parsing
+				var fileExtension = movie[3].trim();
+				return sprintf("%s (%d).%s", title, year, fileExtension);
+			}
+		},
+		
 		guessEpisodeDetails: function(path, basename) {
 			var episode;
 			if (episode = basename.match(/^(.+?)(?:\s*-\s*)?S?(\d+)?[Ex](\d+).*\.(\w+)$/i)) {
@@ -70,10 +85,8 @@
 				 * episode[3] => Episode number (e.g. "06")
 				 * episode[4] => File extension (e.g. ".mkv")
 				 **/
-				var showName = episode[1].replace(/[\._]+/g, " ").replace(/\b[a-z](?!\b|he)/g, function(letter) {
-					return letter.toUpperCase();
-				}).trim();
-				var seasonNumber = parseInt(episode[2], 10); // Explicit radix to make ensure decimal parsing
+				var showName = Organizer.normalizeTitle(episode[1]);
+				var seasonNumber = parseInt(episode[2], 10); // Explicit radix to ensure decimal parsing
 				var episodeNumber = parseInt(episode[3], 10);
 				var fileExtension = episode[4].trim();
 				
@@ -88,8 +101,12 @@
 				
 				return sprintf("%s - S%02dE%02d.%s", showName, seasonNumber, episodeNumber, fileExtension);
 			}
-			
-			return basename;
+		},
+		
+		normalizeTitle: function(title) {
+			return title.replace(/[\._]+/g, " ").replace(/\b[a-z](?!\b|he)/g, function(letter) {
+				return letter.toUpperCase();
+			}).trim();
 		},
 		
 		getMediaTypeByClass: function(btn) {
