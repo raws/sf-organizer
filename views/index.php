@@ -25,7 +25,7 @@
 					var path = groups[1], basename = groups[2];
 					
 					// Try to be helpful about reformatting movie and TV episode file names
-					var fileName = Organizer.guessMovieDetails(path, basename) || Organizer.guessEpisodeDetails(path, basename) || basename;
+					var fileName = Organizer.guessEpisodeDetails(path, basename) || Organizer.guessMovieDetails(path, basename) || basename;
 					
 					pathElement.text(basename);
 					pathElement.prev(".file-basename").text(fileName);
@@ -77,8 +77,9 @@
 		},
 		
 		guessEpisodeDetails: function(path, basename) {
+			if (!(/[ex]\d{1,2}(?!\d)/i.test(basename))) { return; }
 			var episode;
-			if (episode = basename.match(/^(.+?)(?:\s*-\s*)?S?(\d+)?[Ex](\d+).*\.(\w+)$/i)) {
+			if (episode = basename.match(/^(.+?)(?:\s*-\s*)?S?(\d+)?[ex](\d+).*\.(\w+)$/i)) {
 				/**
 				 * episode[1] => Show name (e.g. "top_gear.")
 				 * episode[2] => Season number (e.g. "01") (may be undefined)
