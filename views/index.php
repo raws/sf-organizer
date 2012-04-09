@@ -25,10 +25,10 @@
 					var path = groups[1], basename = groups[2];
 					
 					// Try to be helpful about reformatting TV episode file names
-					basename = Organizer.guessEpisodeDetails(path, basename);
+					var fileName = Organizer.guessEpisodeDetails(path, basename);
 					
 					pathElement.text(basename);
-					pathElement.prev(".file-basename").text(basename);
+					pathElement.prev(".file-basename").text(fileName);
 				}
 			});
 
