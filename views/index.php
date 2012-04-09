@@ -79,7 +79,7 @@
 		guessEpisodeDetails: function(path, basename) {
 			if (!(/[ex]\d{1,2}(?!\d)/i.test(basename))) { return; }
 			var episode;
-			if (episode = basename.match(/^(.+?)(?:\s*-\s*)?S?(\d+)?[ex](\d+).*\.(\w+)$/i)) {
+			if (episode = basename.match(/^(.+?)(?:\s*-\s*)?S?(\d+)?\.?[ex](\d+).*\.(\w+)$/i)) {
 				/**
 				 * episode[1] => Show name (e.g. "top_gear.")
 				 * episode[2] => Season number (e.g. "01") (may be undefined)
@@ -105,7 +105,11 @@
 		},
 		
 		normalizeTitle: function(title) {
-			return title.replace(/[\._]+/g, " ").replace(/\b[a-z](?!\b|he)/g, function(letter) {
+			return title.replace(/[\._]+/g, " ").replace(/\b[a-z]/g, function(letter) {
+				return letter.toUpperCase();
+			}).replace(/\b(?:a|of|the)\b/ig, function(pronoun) {
+				return pronoun.toLowerCase();
+			}).replace(/^\w/, function(letter) {
 				return letter.toUpperCase();
 			}).trim();
 		},
