@@ -70,7 +70,9 @@
 				 * episode[3] => Episode number (e.g. "06")
 				 * episode[4] => File extension (e.g. ".mkv")
 				 **/
-				var showName = episode[1].replace(/[\._]+/g, " ").trim();
+				var showName = episode[1].replace(/[\._]+/g, " ").replace(/\b[a-z](?!\b|he)/g, function(letter) {
+					return letter.toUpperCase();
+				}).trim();
 				var seasonNumber = parseInt(episode[2], 10); // Explicit radix to make ensure decimal parsing
 				var episodeNumber = parseInt(episode[3], 10);
 				var fileExtension = episode[4].trim();
