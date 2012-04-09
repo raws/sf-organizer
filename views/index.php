@@ -13,6 +13,7 @@
 	</div>
 </div>
 
+<script src="assets/javascripts/sprintf-0.7-beta1.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 	var Organizer = {
 		setup: function() {
@@ -22,6 +23,10 @@
 				var groups = pathElement.text().match(/^(.+\/)([^\/]+)$/);
 				if (groups !== null) {
 					var path = groups[1], basename = groups[2];
+					
+					// Try to be helpful about reformatting TV episode file names
+					basename = Organizer.guessEpisodeDetails(path, basename);
+					
 					pathElement.text(basename);
 					pathElement.prev(".file-basename").text(basename);
 				}
@@ -54,6 +59,35 @@
 				var basename = $(this).find(".file-basename")[0];
 				basename.focus();
 			});
+		},
+		
+		guessEpisodeDetails: function(path, basename) {
+			var episode;
+			if (episode = basename.match(/^(.+?)(?:\s*-\s*)?S?(\d+)?[Ex](\d+).*\.(\w+)$/i)) {
+				/**
+				 * episode[1] => Show name (e.g. "top_gear.")
+				 * episode[2] => Season number (e.g. "01") (may be undefined)
+				 * episode[3] => Episode number (e.g. "06")
+				 * episode[4] => File extension (e.g. ".mkv")
+				 **/
+				var showName = episode[1].replace(/[\._]+/g, " ").trim();
+				var seasonNumber = parseInt(episode[2], 10); // Explicit radix to make ensure decimal parsing
+				var episodeNumber = parseInt(episode[3], 10);
+				var fileExtension = episode[4].trim();
+				
+				if (!seasonNumber) {
+					var season;
+					if (season = path.match(/S(\d+)/i)) {
+						seasonNumber = parseInt(season[1], 10);
+					} else {
+						return basename;
+					}
+				}
+				
+				return sprintf("%s - S%02dE%02d.%s", showName, seasonNumber, episodeNumber, fileExtension);
+			}
+			
+			return basename;
 		},
 		
 		getMediaTypeByClass: function(btn) {
