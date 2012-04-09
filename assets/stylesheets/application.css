@@ -27,11 +27,17 @@ ul.file-list > li:nth-child(odd) {
 }
 
 ul.file-list > li:hover,
+ul.file-list > li.delete:hover,
 ul.file-list > li.movie:hover,
 ul.file-list > li.tv:hover {
 	background-color: #f8f6d7;
 	border-bottom-color: rgb(229, 220, 189);
 	-webkit-transition: background-color 0.25s;
+}
+
+ul.file-list > li.delete {
+	background-color: rgb(247, 226, 222);
+	border-bottom-color: rgb(218, 190, 184);
 }
 
 ul.file-list > li.movie {
