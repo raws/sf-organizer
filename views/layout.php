@@ -59,8 +59,10 @@
 				<?php echo($success); ?>
 			</div>
 		<?php endif; ?>
-
-		<?php echo($content); ?>
+		
+		<?php if (isset($content)): ?>
+			<?php echo($content); ?>
+		<?php endif; ?>
 	</div>
 </body>
 </html>

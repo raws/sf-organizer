@@ -11,27 +11,31 @@ Flight::register("explorer", "organizer\Explorer", array(
 ));
 
 Flight::route("/", function() {
-	Flight::render("index", array("entries" => Flight::explorer()->get_entries()), "content");
+	$entries = Flight::explorer()->get_entries();
+	Flight::render("_entries", array("paths" => $entries), "entries");
+	Flight::render("index", array("entries_total" => count($entries)), "content");
 	Flight::render("layout");
 });
 
 Flight::route("POST /", function() {
 	require "lib/organizer/organizer.php";
-	$paths = array();
 	
-	for ($i = 0; $i < sizeof($_POST["paths"]); $i++) {
-		$path = $_POST["paths"][$i];
-		$name = $_POST["names"][$i];
-		$type = $_POST["types"][$i];
-		$paths[$path] = array("name" => $name, "type" => $type);
+	$files = array();
+	
+	for ($i = 0; $i < count($_POST["paths"]); $i++) {
+		$files[$_POST["paths"][$i]] = array("name" => $_POST["names"][$i], "type" => $_POST["types"][$i]);
 	}
 	
 	$settings = Flight::get("organizer.settings");
 	$organizer = new organizer\Organizer($settings);
-	$result = $organizer->organize($paths);
+	$result = $organizer->organize($files);
 	
 	header("Content-type: application/json");
 	echo json_encode($result);
+});
+
+Flight::route("/entries", function() {
+	Flight::render("_entries", array("paths" => Flight::explorer()->get_entries()));
 });
 
 Flight::route("/settings", function() {

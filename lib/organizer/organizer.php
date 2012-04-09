@@ -92,9 +92,9 @@ class Organizer {
 					"path" => $dest_path
 				);
 			}
-			
-			return $result;
 		}
+		
+		return $result;
 	}
 }
 ?>
