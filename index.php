@@ -16,63 +16,19 @@ Flight::route("/", function() {
 });
 
 Flight::route("POST /", function() {
-	$paths = $_POST["paths"];
-	$names = $_POST["names"];
-	$types = $_POST["types"];
-	$files = array();
+	require "lib/organizer/organizer.php";
+	$paths = array();
 	
-	for ($i = 0; $i < sizeof($paths); $i++) {
-		$path = $paths[$i];
-		$name = $names[$i];
-		$type = $types[$i];
-		$files[$path] = array("name" => $name, "type" => $type);
+	for ($i = 0; $i < sizeof($_POST["paths"]); $i++) {
+		$path = $_POST["paths"][$i];
+		$name = $_POST["names"][$i];
+		$type = $_POST["types"][$i];
+		$paths[$path] = array("name" => $name, "type" => $type);
 	}
 	
-	$result = array();
 	$settings = Flight::get("organizer.settings");
-	foreach ($files as $path => $options) {
-		if (!file_exists($path)) {
-			$result[$path] = array("status" => "error", "error" => "Original file does not exist");
-			continue;
-		}
-		
-		if ($options["type"] === "movie") { $options["type"] = "movies"; }
-		if (isset($settings["to"][$options["type"]])) {
-			$dest_dir = $settings["to"][$options["type"]];
-		} else {
-			$result[$path] = array("status" => "error", "error" => "Unrecognized media type", "type" => $options["type"]);
-			continue;
-		}
-		
-		$pathinfo = pathinfo($options["name"]);
-		if ($options["type"] === "movies") {
-			$dest_dir .= "/" . $pathinfo["filename"];
-		} else if ($options["type"] === "tv") {
-			if (preg_match("/^\s*(.*)\s*-\s*S(\d+)E\d+/", $options["name"], $matches)) {
-				$show = trim($matches[1]);
-				$season = intval($matches[2]);
-				$dest_dir .= "/" . $show . "/Season " . $season;
-			} else {
-				$result[$path] = array("status" => "error", "error" => "TV episode name is formatted incorrectly");
-				continue;
-			}
-		}
-		
-		mkdir($dest_dir, 0755, TRUE);
-		
-		$dest_path = $dest_dir . "/" . $options["name"];
-		
-		if (file_exists($dest_path)) {
-			$result[$path] = array("status" => "error", "error" => "New file already exists", "path" => $dest_path);
-			continue;
-		}
-		
-		if (rename($path, $dest_path)) {
-			$result[$path] = array("status" => "success", "path" => $dest_path);
-		} else {
-			$result[$path] = array("status" => "error", "error" => "Could not move file", "path" => $dest_path);
-		}
-	}
+	$organizer = new organizer\Organizer($settings);
+	$result = $organizer->organize($paths);
 	
 	header("Content-type: application/json");
 	echo json_encode($result);
