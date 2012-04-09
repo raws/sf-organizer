@@ -29,6 +29,21 @@ class Organizer {
 			if ($options["type"] === "movie") { $options["type"] = "movies"; }
 			if (isset($this->settings["to"][$options["type"]])) {
 				$dest_dir = $this->settings["to"][$options["type"]];
+			} else if ($options["type"] === "delete") {
+				if (unlink($path)) {
+					$result[$path] = array(
+						"status" => "success",
+						"deleted" => TRUE
+					);
+					continue;
+				} else {
+					$result[$path] = array(
+						"status" => "error",
+						"error" => "Original file could not be deleted",
+						"deleted" => FALSE
+					);
+					continue;
+				}
 			} else {
 				$result[$path] = array(
 					"status" => "error",
