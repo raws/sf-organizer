@@ -38,7 +38,7 @@ Flight::route("POST /", function() {
 		
 		if ($options["type"] === "movie") { $options["type"] = "movies"; }
 		if (isset($settings["to"][$options["type"]])) {
-			$link_dir = $settings["to"][$options["type"]];
+			$dest_dir = $settings["to"][$options["type"]];
 		} else {
 			$result[$path] = array("status" => "error", "error" => "Unrecognized media type", "type" => $options["type"]);
 			continue;
@@ -46,35 +46,31 @@ Flight::route("POST /", function() {
 		
 		$pathinfo = pathinfo($options["name"]);
 		if ($options["type"] === "movies") {
-			$link_dir .= "/" . $pathinfo["filename"];
+			$dest_dir .= "/" . $pathinfo["filename"];
 		} else if ($options["type"] === "tv") {
 			if (preg_match("/^\s*(.*)\s*-\s*S(\d+)E\d+/", $options["name"], $matches)) {
 				$show = trim($matches[1]);
 				$season = intval($matches[2]);
-				$link_dir .= "/" . $show . "/Season " . $season;
+				$dest_dir .= "/" . $show . "/Season " . $season;
 			} else {
 				$result[$path] = array("status" => "error", "error" => "TV episode name is formatted incorrectly");
 				continue;
 			}
 		}
 		
-		mkdir($link_dir, 0755, TRUE);
+		mkdir($dest_dir, 0755, TRUE);
 		
-		$link_path = $link_dir . "/" . $options["name"];
+		$dest_path = $dest_dir . "/" . $options["name"];
 		
-		if (file_exists($link_path)) {
-			$result[$path] = array("status" => "error", "error" => "Link target already exists", "path" => $link_path);
+		if (file_exists($dest_path)) {
+			$result[$path] = array("status" => "error", "error" => "New file already exists", "path" => $dest_path);
 			continue;
 		}
 		
-		if (link($path, $link_path)) {
-			if (unlink($path)) {
-				$result[$path] = array("status" => "success", "path" => $link_path);
-			} else {
-				$result[$path] = array("status" => "warning", "warning" => "Could not delete original file", "path" => $link_path);
-			}
+		if (rename($path, $dest_path)) {
+			$result[$path] = array("status" => "success", "path" => $dest_path);
 		} else {
-			$result[$path] = array("status" => "error", "error" => "Could not create link", "path" => $link_path);
+			$result[$path] = array("status" => "error", "error" => "Could not move file", "path" => $dest_path);
 		}
 	}
 	
