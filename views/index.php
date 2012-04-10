@@ -149,7 +149,7 @@
 		normalizeTitle: function(title) {
 			return title.replace(/[\._]+/g, " ").replace(/\b[a-z]/g, function(letter) {
 				return letter.toUpperCase();
-			}).replace(/\b(?:a|in|of|to|the|and)\b/ig, function(pronoun) {
+			}).replace(/\b(?:a|by|in|of|to|the|and)\b/ig, function(pronoun) {
 				return pronoun.toLowerCase();
 			}).replace(/^\w/, function(letter) {
 				return letter.toUpperCase();
