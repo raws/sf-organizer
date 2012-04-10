@@ -31,6 +31,11 @@
 					pathElement.prev(".file-basename").text(fileName);
 				}
 			});
+			
+			// Make file sizes human readable
+			$(".file-size").text(function(index, text) {
+				return Organizer.humanReadableFileSize(text);
+			});
 
 			// Enable radio button groups
 			$("ul.file-list .file-actions").button();
@@ -150,6 +155,13 @@
 				data["types[]"][index] = Organizer.getMediaTypeByClass(li);
 			});
 			return data;
+		},
+		
+		humanReadableFileSize: function(size) {
+			size = parseInt(size, 10);
+			var suffixes = ["B", "KB", "MB", "GB", "TB", "PB"], i = 0;
+			for (i = 0; size >= 1024 && i < (suffixes.length - 1); i++) { size /= 1024; }
+			return (Math.round(size * 10) / 10) + " " + suffixes[i];
 		}
 	};
 	

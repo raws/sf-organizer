@@ -77,9 +77,10 @@ class Explorer {
 			foreach ($this->get_iterators() as $iterator) {
 				foreach ($iterator as $entry) {
 					$path = $entry[0];
+					$size = $this->get_file_size($path);
 					
 					if (!array_key_exists($path, $this->ignores)) {
-						$this->entries[] = $path;
+						$this->entries[$path] = array("size" => $size);
 						$counter++;
 					}
 					
@@ -89,6 +90,16 @@ class Explorer {
 		}
 		
 		return $this->entries;
+	}
+	
+	private function get_file_size($path) {
+		$size = filesize($path);
+		if ($size < 0) {
+			ob_start();
+			system("ls -al '$path' | awk 'BEGIN {FS=\" \"}{print $5}'");
+			$size = ob_get_clean();
+		}
+		return $size;
 	}
 }
 ?>

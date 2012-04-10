@@ -61,20 +61,20 @@ ul.file-list .file-name {
 	float: left;
 }
 
+ul.file-list .file-name small {
+	height: 1em;
+	display: inline-block;
+	color: #bbb;
+	font-size: 11px;
+	text-overflow: ellipsis;
+}
+
 ul.file-list .file-basename {
 	display: block;
 }
 
 .file-basename:focus {
 	outline: none;
-}
-
-.file-path {
-	height: 1em;
-	display: inline-block;
-	color: #bbb;
-	font-size: 11px;
-	text-overflow: ellipsis;
 }
 
 .file-actions {
