@@ -33,23 +33,27 @@
 	var Organizer = {
 		loadEntries: function() {
 			var fileList = $("#file-list");
-			fileList.slideUp();
-			$("#file-count").parent().fadeOut();
-			
-			var timer = setTimeout(function() {
-				$("#loading").fadeIn();
-			}, 1000);
-			
-			$.ajax("/entries", {
-				success: function(data) {
-					clearTimeout(timer);
-					$("#loading").fadeOut(function() {
-						fileList.html(data);
-						Organizer.setup();
-						fileList.slideDown();
-						$("#file-count").text(fileList.children("li").length).parent().fadeIn();
-					});
-				}
+			fileList.slideUp(function() {
+				fileList.empty();
+				$("#organize-btn").trigger("com.blolol.sf.update-organize-btn");
+				
+				$("#file-count").parent().fadeOut();
+
+				var timer = setTimeout(function() {
+					$("#loading").fadeIn();
+				}, 1000);
+
+				$.ajax("/entries", {
+					success: function(data) {
+						clearTimeout(timer);
+						$("#loading").fadeOut(function() {
+							fileList.html(data);
+							Organizer.setup();
+							fileList.slideDown();
+							$("#file-count").text(fileList.children("li").length).parent().fadeIn();
+						});
+					}
+				});
 			});
 		},
 		
