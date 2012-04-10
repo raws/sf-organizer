@@ -11,6 +11,10 @@ class Organizer {
 	public function organize($paths) {
 		$result = array();
 		
+		if (($ignores = \Flight::setting("ignores")) == null) {
+			$ignores = array();
+		}
+		
 		/*
 		 * Iterate over each path and attempt to move it to its new location,
 		 * based on the settings this Organizer was initialized with.
@@ -44,6 +48,13 @@ class Organizer {
 					);
 					continue;
 				}
+			} else if ($options["type"] === "ignore") {
+				$ignores[$path] = time();
+				$result[$path] = array(
+					"status" => "success",
+					"ignored" => TRUE
+				);
+				continue;
 			} else {
 				$result[$path] = array(
 					"status" => "error",
@@ -108,6 +119,11 @@ class Organizer {
 				);
 			}
 		}
+		
+		// Write settings with any new ignores added
+		$settings = \Flight::get("organizer.settings");
+		$settings["ignores"] = $ignores;
+		\Flight::write_settings($settings);
 		
 		return $result;
 	}

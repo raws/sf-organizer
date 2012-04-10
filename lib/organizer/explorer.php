@@ -4,6 +4,7 @@ namespace organizer;
 class Explorer {
 	private $paths;
 	private $pattern;
+	private $ignores;
 	
 	private $iterators;
 	private $entries;
@@ -11,6 +12,24 @@ class Explorer {
 	public function __construct($paths, $pattern) {
 		$this->paths = $paths;
 		$this->pattern = $pattern;
+		
+		$this->ignores = $this->update_ignores(\Flight::setting("ignores"));
+		$settings = \Flight::get("organizer.settings");
+		$settings["ignores"] = $this->ignores;
+		\Flight::write_settings($settings);
+	}
+	
+	private function update_ignores($ignores) {
+		$new_ignores = array();
+		$cutoff = time() - (7 * 24 * 60 * 60);
+		
+		foreach ($ignores as $path => $timestamp) {
+			if ($timestamp > $cutoff) {
+				$new_ignores[$path] = $timestamp;
+			}
+		}
+		
+		return $new_ignores;
 	}
 	
 	private function construct_iterators() {
@@ -57,8 +76,14 @@ class Explorer {
 			$counter = 0;
 			foreach ($this->get_iterators() as $iterator) {
 				foreach ($iterator as $entry) {
-					$this->entries[] = $entry[0];
-					if (++$counter >= $limit) break;
+					$path = $entry[0];
+					
+					if (!array_key_exists($path, $this->ignores)) {
+						$this->entries[] = $path;
+						$counter++;
+					}
+					
+					if ($counter >= $limit) { break; }
 				}
 			}
 		}
