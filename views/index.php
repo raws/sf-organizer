@@ -1,11 +1,26 @@
-<ul id="file-list" class="file-list">
-	<?php echo($entries); ?>
-</ul>
+<div id="loading" style="display:none;">
+	<div class="spinner">
+		<div class="bar1"></div>
+		<div class="bar2"></div>
+		<div class="bar3"></div>
+		<div class="bar4"></div>
+		<div class="bar5"></div>
+		<div class="bar6"></div>
+		<div class="bar7"></div>
+		<div class="bar8"></div>
+		<div class="bar9"></div>
+		<div class="bar10"></div>
+		<div class="bar11"></div>
+		<div class="bar12"></div>
+	</div>
+</div>
+
+<ul id="file-list" class="file-list"></ul>
 
 <div class="form-actions form-actions-fixed-bottom" style="text-align:right">
 	<div class="container">
 		<div class="pull-left">
-			<p><?php echo($entries_total); ?> files awaiting organization</p>
+			<p style="display:none;"><span id="file-count"></span> files awaiting organization</p>
 		</div>
 		<div class="pull-right">
 			<a id="organize-btn" class="btn btn-primary disabled" href="#">Organize</a>
@@ -16,6 +31,28 @@
 <script src="assets/javascripts/sprintf-0.7-beta1.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 	var Organizer = {
+		loadEntries: function() {
+			var fileList = $("#file-list");
+			fileList.slideUp();
+			$("#file-count").parent().fadeOut();
+			
+			var timer = setTimeout(function() {
+				$("#loading").fadeIn();
+			}, 1000);
+			
+			$.ajax("/entries", {
+				success: function(data) {
+					clearTimeout(timer);
+					$("#loading").fadeOut(function() {
+						fileList.html(data);
+						Organizer.setup();
+						fileList.slideDown();
+						$("#file-count").text(fileList.children("li").length).parent().fadeIn();
+					});
+				}
+			});
+		},
+		
 		setup: function() {
 			// Highlight file basenames
 			$(".file-path").each(function() {
@@ -166,8 +203,6 @@
 	};
 	
 	$(function() {
-		Organizer.setup();
-		
 		// Organize button functionality
 		$("#organize-btn").bind("com.blolol.sf.update-organize-btn", function() {
 			var count = $("li.delete, li.ignore, li.movie, li.tv").length;
@@ -180,11 +215,10 @@
 			if ($(this).hasClass("disabled")) { return; }
 			var data = Organizer.serializeSelections();
 			$.post("/", data, function(data, status) {
-				console.log(data);
-				$("#file-list").load("/entries", function() {
-					Organizer.setup();
-				});
+				Organizer.loadEntries();
 			});
 		});
+		
+		Organizer.loadEntries();
 	});
 </script>
