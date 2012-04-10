@@ -11,9 +11,7 @@ Flight::register("explorer", "organizer\Explorer", array(
 ));
 
 Flight::route("/", function() {
-	$entries = Flight::explorer()->get_entries();
-	Flight::render("_entries", array("paths" => $entries), "entries");
-	Flight::render("index", array("entries_total" => count($entries)), "content");
+	Flight::render("index", array(), "content");
 	Flight::render("layout");
 });
 
