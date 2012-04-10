@@ -45,9 +45,9 @@
 					event.stopPropagation();
 
 					btn.removeClass("active");
-					li.removeClass("delete movie tv");
+					li.removeClass("delete ignore movie tv");
 				} else {
-					li.removeClass("delete movie tv").addClass(btnType);
+					li.removeClass("delete ignore movie tv").addClass(btnType);
 					Organizer.selectElement(li.find(".file-basename")[0]);
 				}
 
@@ -117,6 +117,8 @@
 		getMediaTypeByClass: function(btn) {
 			if (btn.hasClass("delete")) {
 				return "delete";
+			} else if (btn.hasClass("ignore")) {
+				return "ignore";
 			} else if (btn.hasClass("movie")) {
 				return "movie";
 			} else if (btn.hasClass("tv")) {
@@ -141,7 +143,7 @@
 		
 		serializeSelections: function() {
 			var data = { "paths[]": [], "names[]": [], "types[]": [] };
-			$("li.delete, li.movie, li.tv").each(function(index) {
+			$("li.delete, li.ignore, li.movie, li.tv").each(function(index) {
 				var li = $(this);
 				data["paths[]"][index] = li.find(".file-path").attr("title");
 				data["names[]"][index] = li.find(".file-basename").text();
@@ -156,7 +158,7 @@
 		
 		// Organize button functionality
 		$("#organize-btn").bind("com.blolol.sf.update-organize-btn", function() {
-			var count = $("li.delete, li.movie, li.tv").length;
+			var count = $("li.delete, li.ignore, li.movie, li.tv").length;
 			var label = count === 0 ? "Organize" : "Organize " + count + " file";
 			if (count > 1) { label += "s"; }
 			$(this).text(label);

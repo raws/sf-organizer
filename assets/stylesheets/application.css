@@ -28,6 +28,7 @@ ul.file-list > li:nth-child(odd) {
 
 ul.file-list > li:hover,
 ul.file-list > li.delete:hover,
+ul.file-list > li.ignore:hover,
 ul.file-list > li.movie:hover,
 ul.file-list > li.tv:hover {
 	background-color: #f8f6d7;
@@ -38,6 +39,11 @@ ul.file-list > li.tv:hover {
 ul.file-list > li.delete {
 	background-color: rgb(247, 226, 222);
 	border-bottom-color: rgb(218, 190, 184);
+}
+
+ul.file-list > li.ignore {
+	background-color: rgb(241, 223, 242);
+	border-bottom-color: rgb(235, 191, 236);
 }
 
 ul.file-list > li.movie {
@@ -51,7 +57,7 @@ ul.file-list > li.tv {
 }
 
 ul.file-list .file-name {
-	width: 80%;
+	width: 75%;
 	float: left;
 }
 
