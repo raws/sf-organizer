@@ -96,6 +96,7 @@ ul.file-list .file-basename {
 	bottom: 0;
 	z-index: 1030;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	background-color: rgba(238, 238, 238, 0.9);
 }
 
 .form-actions p {
